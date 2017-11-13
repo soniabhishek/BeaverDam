@@ -273,20 +273,26 @@ class PlayerView {
                 this.video.fit();
                 this.sizeVideoFrame();
             });
-            $(this).on('keydn-k                ', () => this.resizeKeyFrame('d'));
-            $(this).on('keyup-k                ', () => this.stopResize());
-            $(this).on('keydn-i                ', () => this.resizeKeyFrame('u'));
-            $(this).on('keyup-i                ', () => this.stopResize());
-            $(this).on('keydn-l                ', () => this.resizeKeyFrame('r'));
-            $(this).on('keyup-l                ', () => this.stopResize());
-            $(this).on('keydn-j                ', () => this.resizeKeyFrame('l'));
-            $(this).on('keyup-j                ', () => this.stopResize());
-
+            $(this).on('keydn-k', () => this.resizeKeyFrame('d'));
+            $(this).on('keydn-ctrl-k', () => this.resizeKeyFrame('ds'));
+            $(this).on('keydn-alt-k', () => this.resizeKeyFrame('dsr'));
+            $(this).on('keyup-k keyup-ctrl-k keyup-alt-k', () => this.stopResize());
+            $(this).on('keydn-i', () => this.resizeKeyFrame('u'));
+            $(this).on('keydn-ctrl-i', () => this.resizeKeyFrame('us'));
+            $(this).on('keydn-alt-i', () => this.resizeKeyFrame('usr'));
+            $(this).on('keyup-i keyup-ctrl-i keyup-alt-i', () => this.stopResize());
+            $(this).on('keydn-l', () => this.resizeKeyFrame('r'));
+            $(this).on('keydn-ctrl-l', () => this.resizeKeyFrame('rs'));
+            $(this).on('keydn-alt-l', () => this.resizeKeyFrame('rsr'));
+            $(this).on('keyup-l keyup-ctrl-l keyup-alt-l', () => this.stopResize());
+            $(this).on('keydn-j', () => this.resizeKeyFrame('l'));
+            $(this).on('keydn-ctrl-j', () => this.resizeKeyFrame('ls'));
+            $(this).on('keydn-alt-j', () => this.resizeKeyFrame('lsr'));
+            $(this).on('keyup-j keyup-ctrl-j keyup-alt-j', () => this.stopResize());
             this.sizeVideoFrame();
             this.loading = false;
         });
     }
-
     // Time control
     stepforward() {
         $(this).trigger('step-forward-keyframe');

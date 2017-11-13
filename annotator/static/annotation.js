@@ -179,10 +179,18 @@ class Annotation {
         let {bounds} = this.getFrameAtTime(time);
         let newBounds = {...bounds};
         switch (param) {
-            case 'u' : newBounds.yMin = bounds.yMin - 5; break;
-            case 'd' : newBounds.yMax = bounds.yMax + 5; break;
-            case 'l' : newBounds.xMin = bounds.xMin - 5; break;
-            case 'r' : newBounds.xMax = bounds.xMax + 5; break;
+            case 'u' : newBounds.yMin = bounds.yMin - 5; newBounds.yMax = bounds.yMax - 5; break;
+            case 'us' : newBounds.yMin = bounds.yMin - 5; break;
+            case 'usr' : newBounds.yMin = bounds.yMin + 5; break;
+            case 'd' : newBounds.yMax = bounds.yMax + 5; newBounds.yMin = bounds.yMin + 5; break;
+            case 'ds' : newBounds.yMax = bounds.yMax + 5; break;
+            case 'dsr' : newBounds.yMax = bounds.yMax - 5; break;
+            case 'l' : newBounds.xMin = bounds.xMin - 5; newBounds.xMax = bounds.xMax - 5; break;
+            case 'ls' : newBounds.xMin = bounds.xMin - 5; break;
+            case 'lsr' : newBounds.xMin = bounds.xMin + 5; break;
+            case 'r' : newBounds.xMax = bounds.xMax + 5; newBounds.xMin = bounds.xMin + 5; break;
+            case 'rs' : newBounds.xMax = bounds.xMax + 5; break;
+            case 'rsr' : newBounds.xMax = bounds.xMax - 5; break;
         }
         this.updateKeyframe({
             time: time,
