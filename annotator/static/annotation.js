@@ -175,7 +175,20 @@ class Annotation {
         return true;
     }
 
-
+    deltaUpdateKeyframe(time, usePreciseFrameMatching, param){
+        let {bounds} = this.getFrameAtTime(time);
+        let newBounds = {...bounds};
+        switch (param) {
+            case 'u' : newBounds.yMin = bounds.yMin - 5; break;
+            case 'd' : newBounds.yMax = bounds.yMax + 5; break;
+            case 'l' : newBounds.xMin = bounds.xMin - 5; break;
+            case 'r' : newBounds.xMax = bounds.xMax + 5; break;
+        }
+        this.updateKeyframe({
+            time: time,
+            bounds: newBounds
+        }, usePreciseFrameMatching);
+    }
     // Delete the entire annotation
     delete() {
         $(this).triggerHandler('delete');

@@ -185,6 +185,13 @@ class Player {
                 $(this).triggerHandler('change-keyframes');
             });
 
+            $(this.view).on('resize-keyframe', (e, param) => {
+                this.view.video.pause();
+                this.resizeSelectedKeyFrame(param);
+                $(this).triggerHandler('change-onscreen-annotations');
+                $(this).triggerHandler('change-keyframes');
+            });
+
             $(this.view).on('step-forward-keyframe', () => {
                 var time = this.view.video.currentTime;
                 if (!this.selectedAnnotation || !this.selectedAnnotation.keyframes)
@@ -451,6 +458,12 @@ class Player {
         }
 
         return true;
+    }
+
+    resizeSelectedKeyFrame(param){
+        if (this.selectedAnnotation == null) return false;
+        var selected = this.selectedAnnotation;
+        selected.deltaUpdateKeyframe(this.view.video.currentTime, this.isImageSequence, param)
     }
 }
 

@@ -37,6 +37,9 @@ class PlayerView {
         // Timder id for rewind
         this.rewindTimerId = null;
 
+        // Timder id for resize
+        this.resizeTimerId = null;
+
         // Is something being dragged?
         this.dragInProgress = false;
 
@@ -270,6 +273,15 @@ class PlayerView {
                 this.video.fit();
                 this.sizeVideoFrame();
             });
+            $(this).on('keydn-k                ', () => this.resizeKeyFrame('d'));
+            $(this).on('keyup-k                ', () => this.stopResize());
+            $(this).on('keydn-i                ', () => this.resizeKeyFrame('u'));
+            $(this).on('keyup-i                ', () => this.stopResize());
+            $(this).on('keydn-l                ', () => this.resizeKeyFrame('r'));
+            $(this).on('keyup-l                ', () => this.stopResize());
+            $(this).on('keydn-j                ', () => this.resizeKeyFrame('l'));
+            $(this).on('keyup-j                ', () => this.stopResize());
+
             this.sizeVideoFrame();
             this.loading = false;
         });
@@ -340,6 +352,17 @@ class PlayerView {
 
     deleteKeyframe() {
         $(this).trigger('delete-keyframe');
+    }
+
+    resizeKeyFrame(param) {
+        this.video.pause();
+        clearInterval(this.resizeTimerId);
+        this.resizeTimerId = setInterval(() => $(this).trigger('resize-keyframe', param), 200);
+        $(this).trigger('resize-keyframe', param);
+    }
+
+    stopResize() {
+        clearInterval(this.resizeTimerId);
     }
 
     checkTimeRange() {
