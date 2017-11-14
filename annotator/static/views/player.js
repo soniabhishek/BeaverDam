@@ -273,22 +273,22 @@ class PlayerView {
                 this.video.fit();
                 this.sizeVideoFrame();
             });
-            $(this).on('keydn-k', () => this.resizeKeyFrame('d'));
-            $(this).on('keydn-ctrl-k', () => this.resizeKeyFrame('ds'));
-            $(this).on('keydn-alt-k', () => this.resizeKeyFrame('dsr'));
-            $(this).on('keyup-k keyup-ctrl-k keyup-alt-k', () => this.stopResize());
-            $(this).on('keydn-i', () => this.resizeKeyFrame('u'));
-            $(this).on('keydn-ctrl-i', () => this.resizeKeyFrame('us'));
-            $(this).on('keydn-alt-i', () => this.resizeKeyFrame('usr'));
-            $(this).on('keyup-i keyup-ctrl-i keyup-alt-i', () => this.stopResize());
-            $(this).on('keydn-l', () => this.resizeKeyFrame('r'));
-            $(this).on('keydn-ctrl-l', () => this.resizeKeyFrame('rs'));
-            $(this).on('keydn-alt-l', () => this.resizeKeyFrame('rsr'));
-            $(this).on('keyup-l keyup-ctrl-l keyup-alt-l', () => this.stopResize());
-            $(this).on('keydn-j', () => this.resizeKeyFrame('l'));
-            $(this).on('keydn-ctrl-j', () => this.resizeKeyFrame('ls'));
-            $(this).on('keydn-alt-j', () => this.resizeKeyFrame('lsr'));
-            $(this).on('keyup-j keyup-ctrl-j keyup-alt-j', () => this.stopResize());
+            $(this).on('keydn-k keydn-2', () => this.resizeKeyFrame('d'));
+            $(this).on('keydn-shift-k keydn-shift-2', () => this.resizeKeyFrame('ds'));
+            $(this).on('keydn-alt-k keydn-alt-2', () => this.resizeKeyFrame('dsr'));
+            $(this).on('keyup-k keyup-2 keyup-shift-k keyup-shift-2 keyup-alt-k keyup-alt-2', () => this.stopResize());
+            $(this).on('keydn-i keydn-5', () => this.resizeKeyFrame('u'));
+            $(this).on('keydn-shift-i keydn-shift-5', () => this.resizeKeyFrame('us'));
+            $(this).on('keydn-alt-i keydn-alt-5', () => this.resizeKeyFrame('usr'));
+            $(this).on('keyup-i keyup-5 keyup-shift-i keyup-shift-5 keyup-alt-i keyup-alt-5', () => this.stopResize());
+            $(this).on('keydn-l keydn-3', () => this.resizeKeyFrame('r'));
+            $(this).on('keydn-shift-l keydn-shift-3', () => this.resizeKeyFrame('rs'));
+            $(this).on('keydn-alt-l keydn-alt-3', () => this.resizeKeyFrame('rsr'));
+            $(this).on('keyup-l keyup-3 keyup-shift-l keyup-shift-3 keyup-alt-l keyup-alt-3', () => this.stopResize());
+            $(this).on('keydn-j keydn-1', () => this.resizeKeyFrame('l'));
+            $(this).on('keydn-shift-j keydn-shift-1', () => this.resizeKeyFrame('ls'));
+            $(this).on('keydn-alt-j keydn-alt-1', () => this.resizeKeyFrame('lsr'));
+            $(this).on('keyup-j keyup-1 keyup-shift-j keyup-shift-1 keyup-alt-j keyup-alt-1', () => this.stopResize());
             this.sizeVideoFrame();
             this.loading = false;
         });
@@ -363,7 +363,7 @@ class PlayerView {
     resizeKeyFrame(param) {
         this.video.pause();
         clearInterval(this.resizeTimerId);
-        this.resizeTimerId = setInterval(() => $(this).trigger('resize-keyframe', param), 200);
+        this.resizeTimerId = setInterval(() => $(this).trigger('resize-keyframe', param), 150);
         $(this).trigger('resize-keyframe', param);
     }
 
