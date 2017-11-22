@@ -163,7 +163,7 @@ class Annotation {
                                 time: justBeforeTime, 
                                 bounds: bounds,
                                 continueInterpolation: false
-                            }
+                            };
             this.updateKeyframe(newFrame, usePreciseFrameMatching);
         }
         else
@@ -179,18 +179,18 @@ class Annotation {
         let {bounds} = this.getFrameAtTime(time);
         let newBounds = {...bounds};
         switch (param) {
-            case 'u' : newBounds.yMin = bounds.yMin - 3; newBounds.yMax = bounds.yMax - 3; break;
-            case 'us' : newBounds.yMin = bounds.yMin - 3; break;
-            case 'usr' : newBounds.yMin = bounds.yMin + 3; break;
-            case 'd' : newBounds.yMax = bounds.yMax + 3; newBounds.yMin = bounds.yMin + 3; break;
-            case 'ds' : newBounds.yMax = bounds.yMax + 3; break;
-            case 'dsr' : newBounds.yMax = bounds.yMax - 3; break;
-            case 'l' : newBounds.xMin = bounds.xMin - 3; newBounds.xMax = bounds.xMax - 3; break;
-            case 'ls' : newBounds.xMin = bounds.xMin - 3; break;
-            case 'lsr' : newBounds.xMin = bounds.xMin + 3; break;
-            case 'r' : newBounds.xMax = bounds.xMax + 3; newBounds.xMin = bounds.xMin + 3; break;
-            case 'rs' : newBounds.xMax = bounds.xMax + 3; break;
-            case 'rsr' : newBounds.xMax = bounds.xMax - 3; break;
+            case 'u' : newBounds.yMin = bounds.yMin - 1; newBounds.yMax = bounds.yMax - 1; break;
+            case 'us' : newBounds.yMin = bounds.yMin - 1; break;
+            case 'usr' : newBounds.yMin = bounds.yMin + 1; break;
+            case 'd' : newBounds.yMax = bounds.yMax + 1; newBounds.yMin = bounds.yMin + 1; break;
+            case 'ds' : newBounds.yMax = bounds.yMax + 1; break;
+            case 'dsr' : newBounds.yMax = bounds.yMax - 1; break;
+            case 'l' : newBounds.xMin = bounds.xMin - 1; newBounds.xMax = bounds.xMax - 1; break;
+            case 'ls' : newBounds.xMin = bounds.xMin - 1; break;
+            case 'lsr' : newBounds.xMin = bounds.xMin + 1; break;
+            case 'r' : newBounds.xMax = bounds.xMax + 1; newBounds.xMin = bounds.xMin + 1; break;
+            case 'rs' : newBounds.xMax = bounds.xMax + 1; break;
+            case 'rsr' : newBounds.xMax = bounds.xMax - 1; break;
         }
         this.updateKeyframe({
             time: time,
