@@ -141,6 +141,7 @@ class Player {
 
         $(this).on('change-keyframes', () => {
             this.drawKeyframes();
+            this.drawAnnotationBar();
         });
 
 
@@ -243,9 +244,39 @@ class Player {
                 $(this).triggerHandler('change-keyframes');
             });
 
+
+            // Edit Annotation
+
+            $('#change-label').on('click', (e) => {
+                var annotation = $(e.currentTarget).data('annotation');
+                var newLabel = $('#edit-label option:selected').val();
+                annotation.changeAnnotationLabel(newLabel);
+                $(this).triggerHandler('change-onscreen-annotations');
+                $(this).triggerHandler('change-keyframes');
+                $('#edit-label-modal').modal('toggle');
+            });
+
+            $('#change-state').on('click', (e) => {
+                var annotation = $(e.currentTarget).data('annotation');
+                var keyframe = $(e.currentTarget).data('keyframe');
+                var newState = $('#edit-state option:selected').val();
+                annotation.changeKeyframeState(keyframe, newState);
+                $(this).triggerHandler('change-onscreen-annotations');
+                $(this).triggerHandler('change-keyframes');
+                $('#edit-state-modal').modal('toggle');
+            });
+
+            // Delete Annotation
+
+            $('#delete-annotation').on('click', (e) => {
+                var annotation = $(e.currentTarget).data('annotation');
+                this.deleteAnnotation(annotation);
+                $(this).triggerHandler('change-onscreen-annotations');
+                $(this).triggerHandler('change-keyframes');
+                $('#delete-annotation-modal').modal('toggle');
+            });
         });
     }
-
 
     // Draw something
 
@@ -265,6 +296,14 @@ class Player {
         }
     }
 
+    drawAnnotationBar() {
+        this.view.annotationbar.resetWithDuration(this.view.video.duration);
+        for (let annotation of this.annotations) {
+            let selected = (annotation == this.selectedAnnotation);
+            this.view.annotationbar.addAnnotation(annotation, {selected});
+        }
+    }
+
     drawAnnotationOnRect(annotation, rect) {
         if (this.metrics.annotationsStartTime == null) {
             this.metrics.annotationsStartTime = Date.now();
@@ -273,7 +312,7 @@ class Player {
         }
         var time = this.view.video.currentTime;
 
-        var {bounds, prevIndex, nextIndex, closestIndex, continueInterpolation} = annotation.getFrameAtTime(time, this.isImageSequence);
+        var {bounds, prevIndex, nextIndex, closestIndex, continueInterpolation, state} = annotation.getFrameAtTime(time, this.isImageSequence);
 
         // singlekeyframe determines whether we show or hide the object
         // we want to hide if:

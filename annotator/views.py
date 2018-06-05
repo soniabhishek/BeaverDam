@@ -158,7 +158,7 @@ def video(request, video_id):
         'label_data': label_data,
         'video_data': video_data,
         'image_list': list(map(urllib.parse.quote, json.loads(video.image_list))) if video.image_list else 0,
-        'image_list_path': urllib.parse.quote(video.host, safe='/:'),
+        'image_list_path': urllib.parse.quote(video.host),
         'help_url': settings.HELP_URL,
         'help_embed': settings.HELP_EMBED,
         'mturk_data': mturk_data,
@@ -170,6 +170,16 @@ def video(request, video_id):
         response['X-Frame-Options'] = 'SAMEORIGIN'
     return response
 
+
+def get_states(request, states=None):
+    label_name = request.GET.get('label_name')
+    if label_name:
+        label_name = label_name.replace("%20", " ")
+    # iterate over each city and append to results list
+    state_data = [{'name': s.name, 'color': s.color} for s in State.objects.filter(label_name=label_name)]
+    # return JSON object
+    return HttpResponse(json.dumps(state_data))
+    
 
 class AnnotationView(View):
 
