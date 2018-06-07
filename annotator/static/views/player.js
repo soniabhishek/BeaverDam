@@ -11,6 +11,10 @@ var PlayerViewConstants = {
 };
 
 
+var fixMode = false;
+var RESIZE_BORDER_EDGE= 5; /* px */
+var RESIZE_BORDER_CORNER= 10; /* px */
+
 class PlayerView {
     constructor({$container, videoSrc, videoStart, videoEnd, isImageSequence}) {
         // This container of the player
@@ -88,7 +92,7 @@ class PlayerView {
 
         if (helpEmbedded) {
             // check cookie
-            var hasSeen = document.cookie && document.cookie.indexOf('has_seen_help=') > -1
+            var hasSeen = document.cookie && document.cookie.indexOf('has_seen_help=') > -1;
             if (!hasSeen) {
                 $('#instructionModal').modal();
             }
@@ -96,6 +100,16 @@ class PlayerView {
             date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days
             document.cookie = 'has_seen_help=yes; expires=' + date.toGMTString() + '; path=/';
             $('#show-help').on('click', () => $('#instructionModal').modal());
+            $('#togBtn').on('click', (e) => {
+                fixMode = e.target.checked;
+                if(fixMode){
+                    RESIZE_BORDER_EDGE = 0;
+                    RESIZE_BORDER_CORNER = 0
+                }else {
+                    RESIZE_BORDER_EDGE= 5; /* px */
+                    RESIZE_BORDER_CORNER= 10 /* px */
+                }
+            });
         }
     }
 
@@ -331,7 +345,7 @@ class PlayerView {
             select.find('option').remove();
 
             for (var i=0; i<d.length; i++) {
-                state = d[i]
+                state = d[i];
                 var option = $('<option value="' + state['name'] +'" style="background-color: #' + state['color'] + '">' + state['name'] + '</option>');
                 if(state['name'] === prevState){
                     option.prop('selected', true);
