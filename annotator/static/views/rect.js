@@ -534,8 +534,10 @@ class CreationRect extends Rect {
         // Trigger event
         if (this.hasBoundsMeetingMin()) {
             if (fixMode){
-                this.bounds.xMax = this.boundsBeforeDrag.xMin + 8;
-                this.bounds.yMax = this.boundsBeforeDrag.yMax + 8;
+                this.bounds.xMin = this.boundsBeforeDrag.xMin
+                this.bounds.yMin = this.boundsBeforeDrag.yMin
+                this.bounds.xMax = this.boundsBeforeDrag.xMin + 9;
+                this.bounds.yMax = this.boundsBeforeDrag.yMax + 9;
                 $(this).triggerHandler('create-bounds', this.bounds);
             }else{
                 $(this).triggerHandler('create-bounds', this.bounds);
