@@ -4,33 +4,13 @@
   <link rel="stylesheet" type="text/css" href="/static/app.css"/>
 
   <script>
-      video = {;
-      {
-          video_data | safe
-      }
-      }
-      imageList = {;
-    {
-        image_list | safe
-    }
-    }
-    mturk = {;
-    {
-        mturk_data.assignment_id | yesno;
-    :
-        'true,false,false'
-    }
-    }
+    video = {{ video_data|safe }};
+    imageList = {{image_list|safe}};
+    mturk = {{ mturk_data.assignment_id|yesno:'true,false,false' }};
     hitId = '{{ mturk_data.hit_id }}';
     workerId = '{{ mturk_data.worker_id }}';
     assignmentId = '{{ mturk_data.assignment_id }}';
-    helpEmbedded = {;
-    {
-        help_embed | yesno;
-    :
-        'true,false,false'
-    }
-    }
+    helpEmbedded = {{ help_embed|yesno:'true,false,false' }};
   </script>
   <script src="/static/vendor/raphael/raphael.min.js"></script>
   <script src="/static/vendor/imgplay/jquery.imgplay.min.js"></script>
@@ -100,7 +80,7 @@
     function update_select(select, data) {
         select.find('option').remove();
         for (var i=0; i<data.length; i++) {
-            state = data[i];
+            state = data[i]
             select.append($('<option value="' + state['name'] +'" style="background-color: #' + state['color'] + '">' + state['name'] + '</option>'));
         }
     }
