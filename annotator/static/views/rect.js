@@ -317,7 +317,7 @@ class Rect {
     // Event handler: Click
 
     onMousedown() {
-        console.log('[CreationRect] onMousedown()')
+        // console.log('[CreationRect] onMousedown()')
         // Trigger event
         // this.focus();
     }
@@ -395,7 +395,7 @@ class Rect {
     }
 
     onDoubleclick() {
-        console.log('[Rect][onDoubleclick()]')
+        // console.log('[Rect][onDoubleclick()]')
         $(this).triggerHandler('focus-all');
         //this.appear({real: false, selected: true});
         // $(this).triggerHandler('discrete-change', this.bounds);
@@ -521,12 +521,12 @@ class CreationRect extends Rect {
     // Event handlers
 
     onMousedown() {
-        console.log('[CreationRect] onMousedown()')
+        // console.log('[CreationRect] onMousedown()')
         // this.focus();
     }
 
     onDragStart(absMouseX, absMouseY) {
-        console.log('[CreationRect] onDragStart')
+        // console.log('[CreationRect] onDragStart')
         var mouse = this.getCanvasRelativePoint(absMouseX, absMouseY);
         this.bounds = {
             xMin: mouse.x,
@@ -557,7 +557,7 @@ class CreationRect extends Rect {
         
         // Trigger event
         $(this).triggerHandler('drag-end');
-        console.log('[CreationRect] :  - Time passed : ', (Date.now()-a)/1000)
+        // console.log('[CreationRect] :  - Time passed : ', (Date.now()-a)/1000)
     }
 
     onMouseover() {

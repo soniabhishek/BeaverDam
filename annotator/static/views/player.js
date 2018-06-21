@@ -149,7 +149,7 @@ class PlayerView {
             this.rects = [];
 
             $(this.creationRect).on('create-bounds', (e, bounds) => {
-                console.log('[Step3] create-bounds')
+                // console.log('[Step3] create-bounds')
                 var a = Date.now()
                 var rect = this.addRect();
                 rect.bounds = bounds;
@@ -420,7 +420,7 @@ class PlayerView {
     }
 
     resizeKeyFrame(param) {
-        console.log('resizeKeyFrame')
+        console.log('[resizeKeyFrame(param)] : param : ', param)
         this.video.pause();
         clearInterval(this.resizeTimerId);
         this.resizeTimerId = setInterval(() => $(this).trigger('resize-keyframe', param), 150);

@@ -106,7 +106,7 @@ class Player {
         });
 
         $(rect).on('select', () => {
-            console.log('[/static/player.js][initBindAnnotationAndRect][select]')
+            // console.log('[/static/player.js][initBindAnnotationAndRect][select]')
             this.selectedAnnotation = annotation;
             $(this).triggerHandler('change-keyframes');
         });
@@ -116,14 +116,14 @@ class Player {
         });
 
         $(rect).on('focus', () => {
-            console.log('[/static/player.js][initBindAnnotationAndRect][focus]')
+            // console.log('[/static/player.js][initBindAnnotationAndRect][focus] --> change-onscreen-annotations || change-keyframes-only')
             this.selectedAnnotation = annotation;
             $(this).triggerHandler('change-onscreen-annotations');
             $(this).triggerHandler('change-keyframes-only');
         });
 
         $(rect).on('focus-all', () => {
-            console.log('[/static/player.js][initBindAnnotationAndRect][focus-all]')
+            // console.log('[/static/player.js][initBindAnnotationAndRect][focus-all] --> change-onscreen-annotations || change-keyframes')
             this.selectedAnnotation = annotation;
             $(this).triggerHandler('change-onscreen-annotations');
             $(this).triggerHandler('change-keyframes');
@@ -154,16 +154,17 @@ class Player {
 
         $(this).on('change-keyframes-only', () => {
             var a = Date.now()
-            this.drawKeyframes();
-            console.log('[L151][change-keyframes-only] : ', (Date.now()-a)/1000)
+            // this.drawKeyframes();
+            console.log('[trigger.change-keyframes-only] : drawKeyframes() : ', (Date.now()-a)/1000,'s')
         });
 
         $(this).on('change-keyframes', () => {
+            console.clear();
             var a = Date.now()
             this.drawKeyframes();
             var b = (Date.now()-a)/1000
             this.drawAnnotationBar();
-            console.log('[L159][change-keyframes] : drawKeyframes() : ', b, ' || drawAnnotationBar : ',(Date.now()-a)/1000)
+            console.log('[trigger.change-keyframes] : drawKeyframes() : ', b, 's || drawAnnotationBar : ',(Date.now()-a)/1000,'s')
         });
 
 
@@ -324,7 +325,6 @@ class Player {
 
     drawAnnotationBar() {
         if (this.annotations){
-            console.log('[/static/players.js][drawAnnotationBar][this.selectedAnnotation] : ', this.selectedAnnotation)
             this.view.annotationbar.resetWithDuration(this.view.video.duration);
             for (let annotation of this.annotations) {
                 // var b = Date.now()
@@ -491,9 +491,12 @@ class Player {
     }
 
     reload_annotation_bar_onclick(e){
+        var loader = document.getElementById('update-annotation-bar-gif')
+        loader.setAttribute("style", "visibility:visible;")
         e.preventDefault();
-        console.log('clicked here!')
         $(this).triggerHandler('change-keyframes');
+        loader.style.display = "show";
+        loader.setAttribute("style", "visibility:hidden;")
     }
 
     addAnnotationAtCurrentTimeFromRect(rect) {
