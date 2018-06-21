@@ -21,7 +21,7 @@ class State(models.Model):
         help_text="Name of class label option.")
     color = models.CharField(blank=True, max_length=6,
         help_text="6 digit hex.")
-    label_name = models.ForeignKey(Label, blank=True, to_field='name')
+    label_name = models.ForeignKey(Label, blank=True, to_field='name', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

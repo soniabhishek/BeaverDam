@@ -129,6 +129,9 @@
             <i>E-mail sent on {{  mturk_data.last_email_sent_date }}</i>
           {% endif %}
           <div id="submit-btn-group" class="btn-group" role="group">
+
+            <button id="update-annotation-bar-btn" type="button" class="btn">Update AnnotationBar</button>
+
             {% if request.user.is_staff == False %}
               <button id="submit-btn" type="button" class="btn btn-primary">Submit</button>
             {% else %}
