@@ -69,9 +69,6 @@ class Player {
     }
 
     initAnnotations() {
-
-
-
         DataSources.annotations.load(this.videoId).then((annotations) => {
             this.annotations = annotations;
             this.annotationsDataReady.resolve();
@@ -133,9 +130,6 @@ class Player {
             $(this).triggerHandler('change-keyframes');
         });
 
-
-
-
         // On Annotation...
 
         $(annotation).on('change delete', () => {
@@ -164,9 +158,9 @@ class Player {
 
         $(this).on('change-keyframes', () => {
             // console.clear();
-            var a = Date.now()
+            let a = Date.now()
             this.drawKeyframes();
-            var b = (Date.now()-a)/1000
+            let b = (Date.now()-a)/1000
             this.drawAnnotationBar();
             console.log('[trigger.change-keyframes] : drawKeyframes() : ', b, 's || drawAnnotationBar : ',(Date.now()-a)/1000,'s')
         });

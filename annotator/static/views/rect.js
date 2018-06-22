@@ -536,7 +536,6 @@ class CreationRect extends Rect {
     }
 
     onDragEnd() {
-        var a = Date.now()
 
         // Trigger event
         if (this.hasBoundsMeetingMin()) {

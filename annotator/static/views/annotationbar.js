@@ -64,7 +64,6 @@ class Annotationbar {
         var id = 'collapse' + annotation.id;
         var selected = classNameExtBooleans.selected ? ' in" aria-expanded="true' : '';
         
-
         var html = $.parseHTML(
             '<div class="panel panel-default">'
             + '<div class="panel-heading">'
