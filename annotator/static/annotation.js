@@ -109,6 +109,9 @@ class Annotation {
         else if (usePreciseFrameMatching && closest.time != time)
             closestIndex = null;
 
+        let state_tmp = prevIndex != null ? this.keyframes[prevIndex].state : "None"
+        if (state_tmp == "None")
+            state_tmp = nextIndex != null ? this.keyframes[nextIndex].state : "None"
         return {
             time: time,
             bounds: bounds,
@@ -116,7 +119,8 @@ class Annotation {
             nextIndex: nextIndex,
             closestIndex: closestIndex,
             continueInterpolation: prevIndex != null ? this.keyframes[prevIndex].continueInterpolation : true,
-            state: prevIndex != null ? this.keyframes[prevIndex].state : "None",
+            // state: prevIndex != null ? this.keyframes[prevIndex].state : "None",
+            state : state_tmp
         };
     }
 
@@ -140,7 +144,6 @@ class Annotation {
 
         if (frame.continueInterpolation === undefined)
             frame.continueInterpolation = true;
-
         if (state)
             frame.state = state;
         else if (frame.state === undefined){
@@ -151,7 +154,6 @@ class Annotation {
             else
                 frame.state = "";
         }
-
         // Update the closestIndex-th frame
         if (closestIndex != null) {
             this.keyframes[closestIndex] = frame;
