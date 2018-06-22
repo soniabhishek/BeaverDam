@@ -153,13 +153,13 @@ class Player {
         });
 
         $(this).on('change-keyframes-only', () => {
-            var a = Date.now()
+            // var a = Date.now()
             // this.drawKeyframes();
-            console.log('[trigger.change-keyframes-only] : drawKeyframes() : ', (Date.now()-a)/1000,'s')
+            // console.log('[trigger.change-keyframes-only] : drawKeyframes() : ', (Date.now()-a)/1000,'s')
         });
 
         $(this).on('change-keyframes', () => {
-            console.clear();
+            // console.clear();
             var a = Date.now()
             this.drawKeyframes();
             var b = (Date.now()-a)/1000
@@ -213,7 +213,6 @@ class Player {
             });
 
             $(this.view).on('resize-keyframe', (e, param) => {
-                console.log('resize-keyframe')
                 this.view.video.pause();
                 this.resizeSelectedKeyFrame(param);
                 $(this).triggerHandler('change-onscreen-annotations');

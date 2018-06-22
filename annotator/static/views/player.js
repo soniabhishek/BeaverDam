@@ -420,7 +420,6 @@ class PlayerView {
     }
 
     resizeKeyFrame(param) {
-        console.log('[resizeKeyFrame(param)] : param : ', param)
         this.video.pause();
         clearInterval(this.resizeTimerId);
         this.resizeTimerId = setInterval(() => $(this).trigger('resize-keyframe', param), 150);
