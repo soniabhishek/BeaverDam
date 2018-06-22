@@ -262,7 +262,6 @@ class Rect {
             throw new Error("Rect.resize: no this.boundsBeforeDrag");
         }
         this.bounds = Bounds.resize(this.boundsBeforeDrag, dxMin, dxMax, dyMin, dyMax);
-
         // Trigger event
         $(this).triggerHandler('incremental-resize', this.bounds);
     }
@@ -304,7 +303,9 @@ class Rect {
     setHandlers() {
         // Handlers
         this.$el.mousedown(this.onMousedown.bind(this));
-        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        // this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this))
+        this.$el.mouseup(this.onDragEnd.bind(this))
         this.$el.mousemove(this.onMouseover.bind(this));
         this.$el.dblclick(this.onDoubleclick.bind(this));
     }
@@ -314,7 +315,7 @@ class Rect {
 
     onMousedown() {
         // Trigger event
-        this.focus();
+        // this.focus();
     }
 
 
@@ -366,7 +367,7 @@ class Rect {
             case 'move':
                 this.move(dx, dy);
                 break;
-            case 'create':
+            case 'create':  //this is the damn culprit
                 this.resize({dxMax: dx, dyMax: dy});
                 break;
         }
@@ -389,7 +390,9 @@ class Rect {
     }
 
     onDoubleclick() {
-        $(this).triggerHandler('discrete-change', this.bounds);
+        $(this).triggerHandler('focus-all');
+        //this.appear({real: false, selected: true});
+        // $(this).triggerHandler('discrete-change', this.bounds);
     }
 
 
@@ -466,7 +469,9 @@ class CreationRect extends Rect {
 
     setHandlers() {
         this.$el.mousedown(this.onMousedown.bind(this));
-        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        // this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this));
+        this.$el.mouseup(this.onDragEnd.bind(this))
         this.$el.mousemove(this.onMouseover.bind(this));
     }
 
@@ -510,7 +515,7 @@ class CreationRect extends Rect {
     // Event handlers
 
     onMousedown() {
-        this.focus();
+        // this.focus();
     }
 
     onDragStart(absMouseX, absMouseY) {
@@ -531,6 +536,7 @@ class CreationRect extends Rect {
     }
 
     onDragEnd() {
+
         // Trigger event
         if (this.hasBoundsMeetingMin()) {
             if (fixMode){
@@ -543,11 +549,11 @@ class CreationRect extends Rect {
                 $(this).triggerHandler('create-bounds', this.bounds);
             }
         }
-
+        
         this.boundsBeforeDrag = undefined;
 
         this.appear({active: false});
-
+        
         // Trigger event
         $(this).triggerHandler('drag-end');
     }

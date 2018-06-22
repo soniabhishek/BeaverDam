@@ -163,6 +163,7 @@ class PlayerView {
             this.rects = [];
 
             $(this.creationRect).on('create-bounds', (e, bounds) => {
+                var a = Date.now()
                 var rect = this.addRect();
                 rect.bounds = bounds;
                 rect.focus();
@@ -466,7 +467,7 @@ class PlayerView {
         this.pause();
     }
 
-    // Rect control
+    ////////////////////////////////////////////////////// Rect control
 
     metrics() {
         return {
