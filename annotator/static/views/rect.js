@@ -264,7 +264,6 @@ class Rect {
             throw new Error("Rect.resize: no this.boundsBeforeDrag");
         }
         this.bounds = Bounds.resize(this.boundsBeforeDrag, dxMin, dxMax, dyMin, dyMax);
-        // console.log(' -- [rect.js][resize] this.bounds :', this.bounds)
         // Trigger event
         $(this).triggerHandler('incremental-resize', this.bounds);
     }

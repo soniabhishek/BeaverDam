@@ -63,9 +63,15 @@ class Player {
         this.view = new PlayerView({$container, videoSrc, videoStart, videoEnd});
 
         this.view.ready().then(this.viewReady.resolve);
+
+        var loader = document.getElementById('update-annotation-bar-gif')
+        loader.setAttribute("style", "display:none;")
     }
 
     initAnnotations() {
+
+
+
         DataSources.annotations.load(this.videoId).then((annotations) => {
             this.annotations = annotations;
             this.annotationsDataReady.resolve();
@@ -96,7 +102,6 @@ class Player {
         // On Rect...
 
         $(rect).on('discrete-change', (e, bounds) => {
-            var a = Date.now()
             annotation.updateKeyframe({
                 time: this.view.video.currentTime,
                 bounds: bounds,
@@ -106,7 +111,6 @@ class Player {
         });
 
         $(rect).on('select', () => {
-            // console.log('[/static/player.js][initBindAnnotationAndRect][select]')
             this.selectedAnnotation = annotation;
             $(this).triggerHandler('change-keyframes');
         });
@@ -487,12 +491,14 @@ class Player {
     }
 
     reload_annotation_bar_onclick(e){
-        var loader = document.getElementById('update-annotation-bar-gif')
-        loader.setAttribute("style", "visibility:visible;")
         e.preventDefault();
-        $(this).triggerHandler('change-keyframes');
-        loader.style.display = "show";
-        loader.setAttribute("style", "visibility:hidden;")
+        var loader = document.getElementById('update-annotation-bar-gif')
+        loader.setAttribute("style", "display:block;")
+        let _this = this
+        setTimeout(function(){
+            $(_this).triggerHandler('change-keyframes');
+            loader.setAttribute("style", "display:none;")
+        }, 10)
     }
 
     addAnnotationAtCurrentTimeFromRect(rect) {
