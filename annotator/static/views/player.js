@@ -149,7 +149,6 @@ class PlayerView {
             this.rects = [];
 
             $(this.creationRect).on('create-bounds', (e, bounds) => {
-                // console.log('[Step3] create-bounds')
                 var a = Date.now()
                 var rect = this.addRect();
                 rect.bounds = bounds;

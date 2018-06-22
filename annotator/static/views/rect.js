@@ -317,7 +317,6 @@ class Rect {
     // Event handler: Click
 
     onMousedown() {
-        // console.log('[CreationRect] onMousedown()')
         // Trigger event
         // this.focus();
     }
@@ -343,7 +342,6 @@ class Rect {
         dy /= scale;
 
         // Inspect cursor to determine which resize/move process to use
-        // console.log('----------> [rect.js][onDragMove] this.dragIntent : ', this.dragIntent)
         switch (this.dragIntent) {
             case 'nw-resize':
                 this.resize({dxMin: dx, dyMin: dy});
@@ -395,7 +393,6 @@ class Rect {
     }
 
     onDoubleclick() {
-        // console.log('[Rect][onDoubleclick()]')
         $(this).triggerHandler('focus-all');
         //this.appear({real: false, selected: true});
         // $(this).triggerHandler('discrete-change', this.bounds);
@@ -521,12 +518,10 @@ class CreationRect extends Rect {
     // Event handlers
 
     onMousedown() {
-        // console.log('[CreationRect] onMousedown()')
         // this.focus();
     }
 
     onDragStart(absMouseX, absMouseY) {
-        // console.log('[CreationRect] onDragStart')
         var mouse = this.getCanvasRelativePoint(absMouseX, absMouseY);
         this.bounds = {
             xMin: mouse.x,
@@ -557,7 +552,6 @@ class CreationRect extends Rect {
         
         // Trigger event
         $(this).triggerHandler('drag-end');
-        // console.log('[CreationRect] :  - Time passed : ', (Date.now()-a)/1000)
     }
 
     onMouseover() {

@@ -189,7 +189,6 @@ class Player {
             });
 
             $(this.view.creationRect).on('focus', () => {
-                console.log('[/static/player.js][view.creationRect).on(focus)]')
                 this.selectedAnnotation = null;
                 $(this).triggerHandler('change-onscreen-annotations');
                 $(this).triggerHandler('change-keyframes-only');
@@ -326,10 +325,8 @@ class Player {
         if (this.annotations){
             this.view.annotationbar.resetWithDuration(this.view.video.duration);
             for (let annotation of this.annotations) {
-                // var b = Date.now()
                 let selected = (annotation == this.selectedAnnotation);
-                this.view.annotationbar.addAnnotation(annotation, {selected});
-                // console.log('[317] : ', (Date.now()-b)/1000)   
+                this.view.annotationbar.addAnnotation(annotation, {selected});   
             }
         }else{
             console.log('[drawAnnotationBar] this.annotations is not yet loaded')
