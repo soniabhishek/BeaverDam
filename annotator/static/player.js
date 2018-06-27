@@ -125,9 +125,19 @@ class Player {
 
         $(rect).on('focus-all', () => {
             // console.log('[/static/player.js][initBindAnnotationAndRect][focus-all] --> change-onscreen-annotations || change-keyframes')
-            this.selectedAnnotation = annotation;
-            $(this).triggerHandler('change-onscreen-annotations');
-            $(this).triggerHandler('change-keyframes');
+            var loader = document.getElementById('update-annotation-bar-gif')
+            loader.setAttribute("style", "display:block;")
+            let _this = this
+            setTimeout(function(){
+                _this.selectedAnnotation = annotation;
+                $(_this).triggerHandler('change-onscreen-annotations');
+                $(_this).triggerHandler('change-keyframes');
+                $(_this).triggerHandler('change-keyframes');
+                loader.setAttribute("style", "display:none;")
+            }, 10)
+            // this.selectedAnnotation = annotation;
+            // $(this).triggerHandler('change-onscreen-annotations');
+            // $(this).triggerHandler('change-keyframes');
         });
 
         // On Annotation...
@@ -164,7 +174,6 @@ class Player {
             this.drawAnnotationBar();
             console.log('[trigger.change-keyframes] : drawKeyframes() : ', b, 's || drawAnnotationBar : ',(Date.now()-a)/1000,'s')
         });
-
 
         // Submitting
         $('#submit-btn').click(this.submitAnnotations.bind(this));
@@ -262,9 +271,18 @@ class Player {
                     }
                     previousKeyFrame = kf;
                 }
-                this.selectedAnnotation.updateKeyframe({time:time, bounds:previousKeyFrame.bounds}, this.isImageSequence);
-                $(this).triggerHandler('change-onscreen-annotations');
-                $(this).triggerHandler('change-keyframes-only');
+                if (previousKeyFrame){
+                    if (Object.keys(previousKeyFrame).indexOf('bounds') > -1){
+                        this.selectedAnnotation.updateKeyframe({time:time, bounds:previousKeyFrame.bounds}, this.isImageSequence);
+                        $(this).triggerHandler('change-onscreen-annotations');
+                        $(this).triggerHandler('change-keyframes-only');
+                    }else{
+                        console.log('[event.duplicate-keyframe] previousKeyFrame : ', previousKeyFrame)
+                    }
+                }else{
+                    console.log('[event.duplicate-keyframe] previousKeyFrame : ', previousKeyFrame)
+                    alert('r - is used to duplicate the previous keyframe. There is not any.')
+                }
             });
 
 
@@ -320,6 +338,7 @@ class Player {
     }
 
     drawAnnotationBar() {
+        // console.log('[drawAnnotationBar()] this.annotations : ', this.annotations)
         if (this.annotations){
             this.view.annotationbar.resetWithDuration(this.view.video.duration);
             for (let annotation of this.annotations) {
@@ -484,6 +503,7 @@ class Player {
         });
     }
 
+    // custom code
     reload_annotation_bar_onclick(e){
         e.preventDefault();
         var loader = document.getElementById('update-annotation-bar-gif')
