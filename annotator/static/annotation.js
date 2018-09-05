@@ -212,17 +212,18 @@ class Annotation {
     deltaUpdateKeyframe(time, usePreciseFrameMatching, param){
         let {bounds} = this.getFrameAtTime(time);
         let newBounds = {...bounds};
+        let dp = 3;
         switch (param) {
-            case 'u' : newBounds.yMin = bounds.yMin - 1; newBounds.yMax = bounds.yMax - 1; break;
+            case 'u' : newBounds.yMin = bounds.yMin - dp; newBounds.yMax = bounds.yMax - dp; break;
             case 'us' : newBounds.yMin = bounds.yMin - 1; break;
             case 'usr' : newBounds.yMin = bounds.yMin + 1; break;
-            case 'd' : newBounds.yMax = bounds.yMax + 1; newBounds.yMin = bounds.yMin + 1; break;
+            case 'd' : newBounds.yMax = bounds.yMax + dp; newBounds.yMin = bounds.yMin + dp; break;
             case 'ds' : newBounds.yMax = bounds.yMax + 1; break;
             case 'dsr' : newBounds.yMax = bounds.yMax - 1; break;
-            case 'l' : newBounds.xMin = bounds.xMin - 1; newBounds.xMax = bounds.xMax - 1; break;
+            case 'l' : newBounds.xMin = bounds.xMin - dp; newBounds.xMax = bounds.xMax - dp; break;
             case 'ls' : newBounds.xMin = bounds.xMin - 1; break;
             case 'lsr' : newBounds.xMin = bounds.xMin + 1; break;
-            case 'r' : newBounds.xMax = bounds.xMax + 1; newBounds.xMin = bounds.xMin + 1; break;
+            case 'r' : newBounds.xMax = bounds.xMax + dp; newBounds.xMin = bounds.xMin + dp; break;
             case 'rs' : newBounds.xMax = bounds.xMax + 1; break;
             case 'rsr' : newBounds.xMax = bounds.xMax - 1; break;
         }
