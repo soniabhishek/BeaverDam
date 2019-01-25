@@ -5,8 +5,6 @@
 var RectConstants = {
     // Mousing over the RESIZE_BORDER px-border around each rectangle
     // initiates resize, else initiates move.
-    RESIZE_BORDER_EDGE: 5 /* px */,
-    RESIZE_BORDER_CORNER: 10 /* px */,
 
     // Minimum dimensions allowed for box
     MIN_RECT_DIMENSIONS: {
@@ -26,7 +24,7 @@ var RectConstants = {
         'w-resize': 'ew-resize',
         'move': 'move',
         'create': 'crosshair',
-    },
+    }
 };
 
 
@@ -264,7 +262,6 @@ class Rect {
             throw new Error("Rect.resize: no this.boundsBeforeDrag");
         }
         this.bounds = Bounds.resize(this.boundsBeforeDrag, dxMin, dxMax, dyMin, dyMax);
-
         // Trigger event
         $(this).triggerHandler('incremental-resize', this.bounds);
     }
@@ -306,7 +303,9 @@ class Rect {
     setHandlers() {
         // Handlers
         this.$el.mousedown(this.onMousedown.bind(this));
-        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        // this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this))
+        this.$el.mouseup(this.onDragEnd.bind(this))
         this.$el.mousemove(this.onMouseover.bind(this));
         this.$el.dblclick(this.onDoubleclick.bind(this));
     }
@@ -316,7 +315,7 @@ class Rect {
 
     onMousedown() {
         // Trigger event
-        this.focus();
+        // this.focus();
     }
 
 
@@ -368,7 +367,7 @@ class Rect {
             case 'move':
                 this.move(dx, dy);
                 break;
-            case 'create':
+            case 'create':  //this is the damn culprit
                 this.resize({dxMax: dx, dyMax: dy});
                 break;
         }
@@ -391,7 +390,9 @@ class Rect {
     }
 
     onDoubleclick() {
-        $(this).triggerHandler('discrete-change', this.bounds);
+        $(this).triggerHandler('focus-all');
+        //this.appear({real: false, selected: true});
+        // $(this).triggerHandler('discrete-change', this.bounds);
     }
 
 
@@ -422,30 +423,30 @@ class Rect {
         };
 
         // Change cursor
-        if (relative.xMin > this.RESIZE_BORDER_EDGE && relative.xMax > this.RESIZE_BORDER_EDGE &&
-            relative.yMin > this.RESIZE_BORDER_EDGE && relative.yMax > this.RESIZE_BORDER_EDGE) {
+        if (relative.xMin > RESIZE_BORDER_EDGE && relative.xMax > RESIZE_BORDER_EDGE &&
+            relative.yMin > RESIZE_BORDER_EDGE && relative.yMax > RESIZE_BORDER_EDGE) {
             this.dragIntent = 'move';
         }
-        else if (relative.yMin < this.RESIZE_BORDER_CORNER) {
-            if (relative.xMin < this.RESIZE_BORDER_CORNER)
+        else if (relative.yMin < RESIZE_BORDER_CORNER) {
+            if (relative.xMin < RESIZE_BORDER_CORNER)
                 this.dragIntent = 'nw-resize';
-            else if (relative.xMax < this.RESIZE_BORDER_CORNER)
+            else if (relative.xMax < this.resizeBorderCorner)
                 this.dragIntent = 'ne-resize';
             else
                 this.dragIntent = 'n-resize';
         }
-        else if (relative.yMax < this.RESIZE_BORDER_CORNER) {
-            if (relative.xMin < this.RESIZE_BORDER_CORNER)
+        else if (relative.yMax < RESIZE_BORDER_CORNER) {
+            if (relative.xMin < RESIZE_BORDER_CORNER)
                 this.dragIntent = 'sw-resize';
-            else if (relative.xMax < this.RESIZE_BORDER_CORNER)
+            else if (relative.xMax < RESIZE_BORDER_CORNER)
                 this.dragIntent = 'se-resize';
             else
                 this.dragIntent = 's-resize';
         }
         else {
-            if (relative.xMin < this.RESIZE_BORDER_CORNER)
+            if (relative.xMin < RESIZE_BORDER_CORNER)
                 this.dragIntent = 'w-resize';
-            else if (relative.xMax < this.RESIZE_BORDER_CORNER)
+            else if (relative.xMax < RESIZE_BORDER_CORNER)
                 this.dragIntent = 'e-resize';
             else
                 throw new Error('Rect.onMouseover: internal error');
@@ -468,7 +469,9 @@ class CreationRect extends Rect {
 
     setHandlers() {
         this.$el.mousedown(this.onMousedown.bind(this));
-        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        // this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this), this.onDragEnd.bind(this));
+        this.$el.drag(this.onDragMove.bind(this), this.onDragStart.bind(this));
+        this.$el.mouseup(this.onDragEnd.bind(this))
         this.$el.mousemove(this.onMouseover.bind(this));
     }
 
@@ -512,7 +515,7 @@ class CreationRect extends Rect {
     // Event handlers
 
     onMousedown() {
-        this.focus();
+        // this.focus();
     }
 
     onDragStart(absMouseX, absMouseY) {
@@ -533,15 +536,24 @@ class CreationRect extends Rect {
     }
 
     onDragEnd() {
+
         // Trigger event
         if (this.hasBoundsMeetingMin()) {
-            $(this).triggerHandler('create-bounds', this.bounds);
+            if (fixMode){
+                this.bounds.xMin = this.boundsBeforeDrag.xMin
+                this.bounds.yMin = this.boundsBeforeDrag.yMin
+                this.bounds.xMax = this.boundsBeforeDrag.xMin + 9;
+                this.bounds.yMax = this.boundsBeforeDrag.yMax + 9;
+                $(this).triggerHandler('create-bounds', this.bounds);
+            }else{
+                $(this).triggerHandler('create-bounds', this.bounds);
+            }
         }
-
+        
         this.boundsBeforeDrag = undefined;
 
         this.appear({active: false});
-
+        
         // Trigger event
         $(this).triggerHandler('drag-end');
     }

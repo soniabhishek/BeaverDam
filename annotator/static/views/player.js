@@ -11,6 +11,10 @@ var PlayerViewConstants = {
 };
 
 
+var fixMode = false;
+var RESIZE_BORDER_EDGE= 5; /* px */
+var RESIZE_BORDER_CORNER= 10; /* px */
+
 class PlayerView {
     constructor({$container, videoSrc, videoStart, videoEnd, isImageSequence}) {
         // This container of the player
@@ -88,7 +92,7 @@ class PlayerView {
 
         if (helpEmbedded) {
             // check cookie
-            var hasSeen = document.cookie && document.cookie.indexOf('has_seen_help=') > -1
+            var hasSeen = document.cookie && document.cookie.indexOf('has_seen_help=') > -1;
             if (!hasSeen) {
                 $('#instructionModal').modal();
             }
@@ -96,6 +100,16 @@ class PlayerView {
             date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days
             document.cookie = 'has_seen_help=yes; expires=' + date.toGMTString() + '; path=/';
             $('#show-help').on('click', () => $('#instructionModal').modal());
+            $('#togBtn').on('click', (e) => {
+                fixMode = e.target.checked;
+                if(fixMode){
+                    RESIZE_BORDER_EDGE = 0;
+                    RESIZE_BORDER_CORNER = 0
+                }else {
+                    RESIZE_BORDER_EDGE= 5; /* px */
+                    RESIZE_BORDER_CORNER= 10 /* px */
+                }
+            });
         }
     }
 
@@ -149,6 +163,7 @@ class PlayerView {
             this.rects = [];
 
             $(this.creationRect).on('create-bounds', (e, bounds) => {
+                var a = Date.now()
                 var rect = this.addRect();
                 rect.bounds = bounds;
                 rect.focus();
@@ -249,6 +264,34 @@ class PlayerView {
             this.$on('control-goto-end', 'click', () => this.jumpToTimeAndPause(this.video.duration));
             this.$on('control-delete-keyframe', 'click', () => this.deleteKeyframe());
 
+            ////////////////////////////////// VIDEO SHORTCUTS - USEFUL //////////////////////////////////
+            $(this).on('keydn-k keydn-2', () => this.resizeKeyFrame('d'));
+            $(this).on('keyup-k keyup-2 keyup-shift-k keyup-shift-2 keyup-alt-k keyup-alt-2', () => this.stopResize());
+            
+            $(this).on('keydn-i keydn-5', () => this.resizeKeyFrame('u'));
+            $(this).on('keyup-i keyup-5 keyup-shift-i keyup-shift-5 keyup-alt-i keyup-alt-5', () => this.stopResize());
+
+            $(this).on('keydn-l keydn-3', () => this.resizeKeyFrame('r'));
+            $(this).on('keyup-l keyup-3 keyup-shift-l keyup-shift-3 keyup-alt-l keyup-alt-3', () => this.stopResize());
+            
+            $(this).on('keydn-j keydn-1', () => this.resizeKeyFrame('l'));
+            $(this).on('keyup-j keyup-1 keyup-shift-j keyup-shift-1 keyup-alt-j keyup-alt-1', () => this.stopResize());
+
+            $(this).on('keydn-a keydnr-a     ', () => {
+                if (!this.loading)
+                    this.video.previousFrame()
+            });
+            $(this).on('keydn-s keydnr-s    ', () => {
+                if (!this.loading)
+                    this.video.nextFrame()
+            });
+
+            // Keyframe duplication
+            // $(this).on('keydn-r                ', () => this.duplicateKeyFrame());
+            // video frame stepping - capture the repeat events with the 'r' handler
+
+
+            ///////////////////////////////// VIDEO SHORTCUTS - NOT USEFUL //////////////////////////////////
             // better key events => video
             // play/pause
             $(this).on('keydn-space            ', () => this.playPause());
@@ -263,17 +306,7 @@ class PlayerView {
             // Keyframe stepping
             $(this).on('keydn-g                ', () => this.stepforward());
             $(this).on('keydn-f                ', () => this.stepbackward());
-            // Keyframe duplication
-            $(this).on('keydn-r                ', () => this.duplicateKeyFrame());
-            // video frame stepping - capture the repeat events with the 'r' handler
-            $(this).on('keydn-a keydnr-a     ', () => {
-                if (!this.loading)
-                    this.video.previousFrame()
-            });
-            $(this).on('keydn-s keydnr-s    ', () => {
-                if (!this.loading)
-                    this.video.nextFrame()
-            });
+            
             $('#scale-checkbox').on('click', () => {
                 this.scaleToFit = $('#scale-checkbox')[0].checked;
                 if (this.scaleToFit) {
@@ -290,22 +323,16 @@ class PlayerView {
                 this.video.fit();
                 this.sizeVideoFrame();
             });
-            $(this).on('keydn-k keydn-2', () => this.resizeKeyFrame('d'));
-            $(this).on('keydn-shift-k keydn-shift-2', () => this.resizeKeyFrame('ds'));
+            
+            
             $(this).on('keydn-alt-k keydn-alt-2', () => this.resizeKeyFrame('dsr'));
-            $(this).on('keyup-k keyup-2 keyup-shift-k keyup-shift-2 keyup-alt-k keyup-alt-2', () => this.stopResize());
-            $(this).on('keydn-i keydn-5', () => this.resizeKeyFrame('u'));
+            $(this).on('keydn-shift-k keydn-shift-2', () => this.resizeKeyFrame('ds'));
             $(this).on('keydn-shift-i keydn-shift-5', () => this.resizeKeyFrame('us'));
             $(this).on('keydn-alt-i keydn-alt-5', () => this.resizeKeyFrame('usr'));
-            $(this).on('keyup-i keyup-5 keyup-shift-i keyup-shift-5 keyup-alt-i keyup-alt-5', () => this.stopResize());
-            $(this).on('keydn-l keydn-3', () => this.resizeKeyFrame('r'));
             $(this).on('keydn-shift-l keydn-shift-3', () => this.resizeKeyFrame('rs'));
             $(this).on('keydn-alt-l keydn-alt-3', () => this.resizeKeyFrame('rsr'));
-            $(this).on('keyup-l keyup-3 keyup-shift-l keyup-shift-3 keyup-alt-l keyup-alt-3', () => this.stopResize());
-            $(this).on('keydn-j keydn-1', () => this.resizeKeyFrame('l'));
             $(this).on('keydn-shift-j keydn-shift-1', () => this.resizeKeyFrame('ls'));
             $(this).on('keydn-alt-j keydn-alt-1', () => this.resizeKeyFrame('lsr'));
-            $(this).on('keyup-j keyup-1 keyup-shift-j keyup-shift-1 keyup-alt-j keyup-alt-1', () => this.stopResize());
             this.sizeVideoFrame();
             this.loading = false;
         });
@@ -331,7 +358,7 @@ class PlayerView {
             select.find('option').remove();
 
             for (var i=0; i<d.length; i++) {
-                state = d[i]
+                state = d[i];
                 var option = $('<option value="' + state['name'] +'" style="background-color: #' + state['color'] + '">' + state['name'] + '</option>');
                 if(state['name'] === prevState){
                     option.prop('selected', true);
@@ -452,7 +479,7 @@ class PlayerView {
         this.pause();
     }
 
-    // Rect control
+    ////////////////////////////////////////////////////// Rect control
 
     metrics() {
         return {
